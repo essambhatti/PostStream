@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container mt-1 mb-4">
+      <form action="{{ url_for('search_results') }}" method="GET" class="d-flex">
+        <div class="input-group">
+          <span class="input-group-text bg-dark border-end-0">
+            <i class="fas fa-search text-muted"></i>
+          </span>
+          <input class="form-control border-start-0" type="search" name="query" placeholder="Search posts, trends or users..." aria-label="Search" required>
+          <button class="btn btn-primaryy" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+    
+    {% for post in posts %}
+    <article class="media content-section mb-4 p-3 border rounded shadow-sm">
+        <img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/' + post.author.image_file)}}" alt="Profile picture">
+        <div class="media-body">
+            <div class="article-metadata d-flex justify-content-between align-items-center mb-2">
+                <div>
+                  {% if post.original_post %}
+                    <p class="text-muted mb-1"><i class="fas fa-retweet me-1"></i>Reposted from <a class="fw-bold" href="{{ url_for('user_posts', username=post.original_post.author.username) }}">{{ post.original_post.author.username }}</a></p>
+                  {% endif %}
+                    <a class="fw-bold text-decoration-none d-inline-block me-2" href="{{url_for('user_posts', username=post.author.username)}}">{{ post.author.username }}</a>
+                    <small class="text-muted"><i class="far fa-clock me-1"></i>{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+            </div>
+            <h2><a class="article-title text-decoration-none fw-bold" href="{{url_for('post', post_id=post.id)}}">{{ post.title }}</a></h2>
+            <div class="text-break">
+              {% if post.content|length > 300 %}
+              <div class="post-content" style="white-space: pre-wrap;">{{ post.content[:300] | safe }}<span class="fade">...</span> <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-sm btn-outline-primary mt-2">Read more</a></div>
+              {% else %}
+              <div class="post-content" style="white-space: pre-wrap;">{{ post.content | safe }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Attachment Display -->
+            {% if post.attachment %}
+                {% set ext = post.attachment.split('.')[-1].lower() %}
+                  {% if ext in ['jpg', 'jpeg', 'png', 'gif', 'webp'] %}
+                    <div class="mt-3">
+                      <img src="{{ url_for('static', filename='post_attachments/' + post.attachment) }}" class="post-image shadow-sm" alt="Post attachment">
+                    </div>
+                  {% elif ext in ['mp4', 'webm'] %}
+                    <div class="mt-3">
+                      <video controls class="w-100 rounded shadow-sm">
+                        <source src="{{ url_for('static', filename='post_attachments/' + post.attachment) }}" type="video/{{ ext }}">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  {% endif %}
+            {% endif %}
+            
+            <!-- Trends/Tags -->
+            {% if post.trends %}
+            <div class="mt-3">
+              {% for trend in post.trends %}
+                <a href="{{ url_for('trend_posts', name=trend.name) }}" class="badge bg-info text-dark me-1 text-decoration-none">#{{ trend.name }}</a>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Interaction Buttons -->
+            <div class="mt-3 d-flex gap-3">
+              <form action="{{url_for('like', post_id=post.id)}}" method="POST" style="display: inline;">
+                {{form.hidden_tag()}}
+                <button class="btn btn-outline-primary btn-sm"><i class="far fa-thumbs-up me-1"></i>{{ post.like_count or 0 }}</button>
+              </form>
+              
+              <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-outline-info btn-sm text-decoration-none">
+                <i class="far fa-comment me-1"></i>{{ post.comments|length }}
+              </a>
+             
+              <form action="{{ url_for('repost', post_id=post.id) }}" method="POST">
+                {{repost.hidden_tag()}}
+                <button class="btn btn-sm btn-outline-secondary" type="submit"><i class="fas fa-retweet me-1"></i>Repost</button>
+              </form>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+    
+    <!-- Pagination (if needed) -->
+    {% if posts.has_prev or posts.has_next %}
+    <div class="d-flex justify-content-center mt-4">
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          {% if posts.has_prev %}
+            <li class="page-item">
+              <a class="page-link bg-dark text-light border-secondary" href="{{ url_for('home', page=posts.prev_num) }}">
+                <i class="fas fa-chevron-left"></i> Previous
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link bg-dark text-muted border-secondary">
+                <i class="fas fa-chevron-left"></i> Previous
+              </span>
+            </li>
+          {% endif %}
+          
+          {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+              {% if posts.page == page_num %}
+                <li class="page-item active">
+                  <span class="page-link bg-primary border-primary">{{ page_num }}</span>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link bg-dark text-light border-secondary" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                </li>
+              {% endif %}
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link bg-dark border-secondary">...</span>
+              </li>
+            {% endif %}
+          {% endfor %}
+          
+          {% if posts.has_next %}
+            <li class="page-item">
+              <a class="page-link bg-dark text-light border-secondary" href="{{ url_for('home', page=posts.next_num) }}">
+                Next <i class="fas fa-chevron-right"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link bg-dark text-muted border-secondary">
+                Next <i class="fas fa-chevron-right"></i>
+              </span>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+    {% endif %}
+{% endblock content %}

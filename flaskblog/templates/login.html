@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-4 mb-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <form action="{{ url_for('search_results') }}" method="GET" class="search-form mb-4">
+        <div class="input-group">
+          <span class="input-group-text bg-transparent border-end-0">
+            <i class="fas fa-search text-muted"></i>
+          </span>
+          <input class="form-control border-start-0" type="search" name="query" placeholder="Search posts, trends or users..." aria-label="Search" required>
+          <button class="btn btn-primaryy" type="submit">Search</button>
+        </div>
+      </form>
+      
+      <div class="content-section glassmorphism">
+        <form method="POST" action="" novalidate>
+          {{ form.hidden_tag() }}
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-4 d-flex align-items-center">
+              <i class="fas fa-sign-in-alt me-3 gradient-icon"></i>
+              <span class="gradient-text">Welcome Back</span>
+            </legend>
+            
+            <div class="form-group mb-4">
+              {{ form.email.label(class="form-control-label") }}
+              <div class="input-group">
+                <span class="input-group-text bg-transparent">
+                  <i class="fas fa-envelope text-muted"></i>
+                </span>
+                {% if form.email.errors %}
+                  {{ form.email(class="form-control form-control-lg is-invalid", placeholder="Enter your email") }}
+                  <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                      <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  {{ form.email(class="form-control form-control-lg", placeholder="Enter your email") }}
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="form-group mb-4">
+              {{ form.password.label(class="form-control-label") }}
+              <div class="input-group">
+                <span class="input-group-text bg-transparent">
+                  <i class="fas fa-lock text-muted"></i>
+                </span>
+                {% if form.password.errors %}
+                  {{ form.password(class="form-control form-control-lg is-invalid", placeholder="Enter your password") }}
+                  <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                      <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  {{ form.password(class="form-control form-control-lg", placeholder="Enter your password") }}
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="form-check mb-3">
+              {{form.remember(class='form-check-input')}}
+              {{form.remember.label(class="form-check-label")}}
+            </div>
+          </fieldset>
+          
+          <div class="form-group mt-4 mb-3">
+            {{ form.submit(class='btn btn-primaryy btn-lg w-100 pulse-effect') }}
+          </div>
+          
+          <div class="text-center mt-3">
+            <small class="text-muted">
+              <a href="#" class="text-decoration-none hover-link">Forgot password?</a>
+            </small>
+          </div>
+        </form>
+      </div>
+      
+      <div class="content-section glassmorphism text-center mt-4">
+        <p class='mb-0'>
+          Don't Have an Account? <a class='ms-2 text-decoration-none gradient-text' href="{{url_for('register')}}">Register</a>
+        </p>
+      </div>
+      
+      <div class="mt-4">
+        <form method="POST" action="{{ url_for('resend_confirmation') }}" class="resend-form">
+          {{form.hidden_tag()}}
+          <div class="mb-3">
+            <input type="email" name="email" placeholder="Enter email to resend link" required class="form-control">
+          </div>
+          <button type="submit" class="btn btn-outline-secondary btn-lg w-100">
+            <i class="fas fa-paper-plane me-2"></i>Resend Confirmation Email
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

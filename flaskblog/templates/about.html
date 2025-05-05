@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-3 mb-4">
+  <form action="{{ url_for('search_results') }}" method="GET" class="d-flex">
+    <div class="input-group">
+      <span class="input-group-text bg-dark border-end-0 text-purple">
+        <i class="fas fa-search"></i>
+      </span>
+      <input class="form-control border-start-0 bg-dark text-light" type="search" name="query" placeholder="Search posts, trends or users..." aria-label="Search" required>
+      <button class="btn btn-primaryy pulse-btn" type="submit">Search</button>
+    </div>
+  </form>
+</div>
+
+<div class="content-section p-4 shadow-lg glass-effect">
+  <div class="text-center mb-4">
+    <i class="fas fa-stream fa-3x text-gradient mb-3"></i>
+    <h1 class="text-gradient fw-bold mb-4">About PostStream</h1>
+    <p class="lead text-light">Welcome to a social platform designed for sharing ideas, connecting with others, and discovering trending content.</p>
+  </div>
+  
+  <hr class="divider my-4">
+  
+  <div class="row mt-5">
+    <div class="col-md-6 mb-4">
+      <div class="feature-card p-4">
+        <div class="feature-icon mb-3">
+          <i class="fas fa-share-alt"></i>
+        </div>
+        <h4 class="fw-bold">Share Your Ideas</h4>
+        <p class="text-muted">Post your thoughts, stories, and discoveries with the community. Add images, videos, and trends to make your content stand out.</p>
+      </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+      <div class="feature-card p-4">
+        <div class="feature-icon mb-3">
+          <i class="fas fa-comment"></i>
+        </div>
+        <h4 class="fw-bold">Engage in Conversations</h4>
+        <p class="text-muted">Comment on posts, share your perspective, and engage in meaningful dialogues with other users.</p>
+      </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+      <div class="feature-card p-4">
+        <div class="feature-icon mb-3">
+          <i class="fas fa-retweet"></i>
+        </div>
+        <h4 class="fw-bold">Spread Great Content</h4>
+        <p class="text-muted">Found something you love? Repost it to share with your followers and give credit to the original creator.</p>
+      </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+      <div class="feature-card p-4">
+        <div class="feature-icon mb-3">
+          <i class="fas fa-hashtag"></i>
+        </div>
+        <h4 class="fw-bold">Discover Trends</h4>
+        <p class="text-muted">Explore trending topics, follow hashtags that interest you, and stay updated with what's happening in the community.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="text-center mt-4">
+    <a href="{{ url_for('register') }}" class="btn btn-lg btn-primary glow-effect">Join Our Community</a>
+    <p class="mt-3 text-muted">Already a member? <a href="{{ url_for('login') }}" class="text-accent">Sign in</a></p>
+  </div>
+</div>
+
+<style>
+  .glass-effect {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .text-gradient {
+    background: linear-gradient(45deg, var(--accent-primary), var(--accent-info));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .divider {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+    border: none;
+    opacity: 1;
+  }
+  
+  .feature-card {
+    background-color: rgba(40, 40, 40, 0.6);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    height: 100%;
+    border-left: 3px solid var(--accent-primary);
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: rgba(50, 50, 50, 0.8);
+  }
+  
+  .feature-icon {
+    display: inline-block;
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--accent-primary), var(--accent-info));
+    color: #fff;
+  }
+  
+  .glow-effect {
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+    transition: all 0.3s ease;
+  }
+  
+  .glow-effect:hover {
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
+  }
+  
+  .pulse-btn {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(138, 43, 226, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(138, 43, 226, 0);
+    }
+  }
+  
+  .text-accent {
+    color: var(--accent-info);
+  }
+  
+  .text-accent:hover {
+    color: var(--accent-primary);
+  }
+</style>
+{% endblock content %}

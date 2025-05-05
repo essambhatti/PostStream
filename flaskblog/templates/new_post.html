@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-4 mb-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="content-section glassmorphism">
+        <form method="POST" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-4 d-flex align-items-center">
+              <i class="fas fa-edit me-3 gradient-icon"></i>
+              <span class="gradient-text">{{ legend }}</span>
+            </legend>
+            
+            <div class="form-group mb-4">
+              {{ form.title.label(class="form-label") }}
+              <div class="input-group">
+                <span class="input-group-text bg-transparent">
+                  <i class="fas fa-heading text-muted"></i>
+                </span>
+                {{ form.title(class="form-control form-control-lg", placeholder="Post title") }}
+              </div>
+            </div>
+            
+            <div class="form-group mb-4">
+              {{ form.content.label(class="form-label") }}
+              <div class="content-editor">
+                {{ form.content(class="form-control", rows="8", placeholder="Write your post...") }}
+              </div>
+              <div class="text-end mt-1">
+                <small class="text-muted">Format with markdown for best results</small>
+              </div>
+            </div>
+            
+            <div class="form-group mb-4">
+              {{ form.trends.label(class="form-label") }}
+              <div class="input-group">
+                <span class="input-group-text bg-transparent">
+                  <i class="fas fa-hashtag text-muted"></i>
+                </span>
+                {{ form.trends(class="form-control", placeholder="Add trends (e.g. tech, news, sports)") }}
+              </div>
+              <small class="form-text text-muted">Separate multiple trends with commas</small>
+            </div>
+
+            <div class="form-group mb-4">
+              {{ form.attachment.label(class="form-label") }}
+              <div class="attachment-upload">
+                <label for="{{ form.attachment.id }}" class="custom-file-upload">
+                  <i class="fas fa-cloud-upload-alt me-2"></i>
+                  <span>Choose File</span>
+                  {{ form.attachment(class="form-control", style="display: none;", id=form.attachment.id) }}
+                </label>
+                <div class="file-name-display mt-2">No file chosen</div>
+              </div>
+              <small class="form-text text-muted">Upload image or video as attachment (optional)</small>
+              {% if post and post.attachment %}
+              <div class="mt-2 current-attachment">
+                <p class="mb-1">Current Attachment:</p>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-paperclip me-2"></i>
+                  <a href="{{ url_for('static', filename='attachments/' + post.attachment) }}" target="_blank" class="text-decoration-none">
+                    {{ post.attachment }}
+                  </a>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </fieldset>
+
+          <div class="form-group mt-4 d-flex justify-content-between">
+            <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">
+              <i class="fas fa-times me-2"></i>Cancel
+            </a>
+            {{ form.publish(class="btn btn-primaryy")  }}  
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Display file name when selected
+    const fileInput = document.getElementById('{{ form.attachment.id }}');
+    const fileNameDisplay = document.querySelector('.file-name-display');
+    
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        fileNameDisplay.textContent = this.files[0].name;
+        fileNameDisplay.style.color = 'var(--accent-primary)';
+      } else {
+        fileNameDisplay.textContent = 'No file chosen';
+        fileNameDisplay.style.color = 'var(--text-muted)';
+      }
+    });
+  });
+</script>
+{% endblock %}

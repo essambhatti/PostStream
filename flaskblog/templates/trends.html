@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-1 mb-4">
+  <form action="{{ url_for('search_results') }}" method="GET" class="d-flex">
+    <div class="input-group">
+      <span class="input-group-text bg-dark border-end-0">
+        <i class="fas fa-search text-muted"></i>
+      </span>
+      <input class="form-control border-start-0" type="search" name="query" placeholder="Search posts, trends or users..." aria-label="Search" required>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  </form>
+</div>
+<div class="container mt-4">
+  <div class="content-section p-4 mb-4">
+    <div class="d-flex align-items-center mb-4">
+      <div class="trend-icon me-3 p-3 rounded-circle bg-danger">
+        <i class="fas fa-fire text-white fs-3"></i>
+      </div>
+      <div>
+        <h2 class="mb-0">Top Trends - <span class="text-primary">{{ filter|capitalize }}</span></h2>
+        <p class="text-muted mt-1">Discover what's trending in the community</p>
+      </div>
+    </div>
+
+    <!-- Filter Dropdown -->
+    <form method="get" class="mb-4">
+      <div class="input-group w-auto">
+        <span class="input-group-text bg-dark"><i class="fas fa-filter text-muted"></i></span>
+        <select name="filter" onchange="this.form.submit()" class="form-select">
+          <option value="all" {% if filter == 'all' %}selected{% endif %}>All Time</option>
+          <option value="today" {% if filter == 'today' %}selected{% endif %}>Today</option>
+          <option value="7days" {% if filter == '7days' %}selected{% endif %}>Last 7 Days</option>
+          <option value="30days" {% if filter == '30days' %}selected{% endif %}>Last 30 Days</option>
+        </select>
+      </div>
+    </form>
+  </div>
+
+  {% if trends_with_count %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+      {% for trend, count in trends_with_count %}
+      <div class="col">
+        <div class="card shadow-sm h-100 trend-card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="{{ url_for('trend_posts', name=trend.name) }}" class="text-decoration-none text-primary">
+                <i class="fas fa-hashtag me-1"></i>{{ trend.name }}
+              </a>
+            </h5>
+            <p class="card-text text-muted">
+              <i class="fas fa-chart-line me-1 text-success"></i>
+              Posts using this trend: <span class="fw-bold">{{ count }}</span>
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0">
+            <a href="{{ url_for('trend_posts', name=trend.name) }}" class="btn btn-sm btn-outline-primary w-100">
+              <i class="fas fa-eye me-1"></i>View Posts
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">
+      <i class="fas fa-info-circle me-2"></i>No trends found for this filter.
+    </div>
+  {% endif %}
+  
+  <!-- Optional: Add a button to see all posts -->
+  <div class="mt-4 text-center">
+    <a href="{{ url_for('home') }}" class="btn btn-outline-primary">
+      <i class="fas fa-home me-1"></i>Back to Home
+    </a>
+  </div>
+</div>
+{% endblock content %}

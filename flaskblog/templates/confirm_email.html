@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your PostStream Account</title>
+    <style>
+        /* Email Template Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #121212;
+            color: #f1f1f1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #8a2be2, #00d2d3);
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+        }
+        
+        .email-body {
+            padding: 30px;
+            background-color: #1e1e1e;
+        }
+        
+        .greeting {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #8a2be2;
+        }
+        
+        .message {
+            margin-bottom: 30px;
+            font-size: 16px;
+            color: #b3b3b3;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #8a2be2, #00d2d3);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.6);
+        }
+        
+        .note {
+            font-size: 14px;
+            color: #8c8c8c;
+            font-style: italic;
+            margin-top: 30px;
+        }
+        
+        .email-footer {
+            background-color: #121212;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #8c8c8c;
+            border-top: 1px solid #333;
+        }
+        
+        .social-links {
+            margin: 15px 0;
+        }
+        
+        .social-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #333;
+            border-radius: 50%;
+            margin: 0 5px;
+            line-height: 30px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100%;
+                border-radius: 0;
+            }
+            
+            .email-header, .email-body, .email-footer {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <div class="logo">PostStream</div>
+        </div>
+        
+        <div class="email-body">
+            <div class="greeting">Hello {{ user.username }},</div>
+            
+            <div class="message">
+                <p>Thank you for joining PostStream! We're excited to have you as part of our community.</p>
+                <p>To complete your registration and activate your account, please verify your email address by clicking the button below:</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="{{ confirm_url }}" class="cta-button">Confirm My Email</a>
+            </div>
+            
+            <div class="message">
+                <p>Once confirmed, you'll have full access to all PostStream features, including:</p>
+                <ul>
+                    <li>Share posts with the community</li>
+                    <li>Comment on others' posts</li>
+                    <li>Repost content you enjoy</li>
+                    <li>Follow trending topics</li>
+                </ul>
+            </div>
+            
+            <div class="note">
+                <p>If you did not create an account with PostStream, please ignore this email.</p>
+                <p>This link will expire in 24 hours for security reasons.</p>
+            </div>
+        </div>
+        
+        <div class="email-footer">
+            <p>© 2025 PostStream. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="social-icon">f</a>
+                <a href="#" class="social-icon">t</a>
+                <a href="#" class="social-icon">in</a>
+                <a href="#" class="social-icon">ig</a>
+            </div>
+            <p>Questions? Contact our support team at support@poststream.com</p>
+        </div>
+    </div>
+</body>
+</html>

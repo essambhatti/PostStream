@@ -1,0 +1,781 @@
+/* Dark Theme Main CSS for PostStream */
+:root {
+  --dark-bg: #121212;
+  --dark-card: #1e1e1e;
+  --dark-input: #2d2d2d;
+  --accent-primary: #8a2be2;  /* Vibrant purple */
+  --accent-secondary: #5f27cd;
+  --accent-info: #00d2d3;
+  --accent-success: #00b894;
+  --accent-warning: #fdcb6e;
+  --accent-danger: #ff6b6b;
+  --text-primary: #f1f1f1;
+  --text-secondary: #b3b3b3;
+  --text-muted: #8c8c8c;
+  --border-color: #333333;
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+/* Navbar styling */
+.bg-steel {
+  background-color: #0f0f0f !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--accent-primary) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--text-primary);
+  margin: 0 3px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+/* Content Section Styling */
+.content-section {
+  background-color: var(--dark-card);
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.content-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Form elements */
+.form-control {
+  background-color: var(--dark-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.form-control:focus {
+  background-color: var(--dark-input);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.input-group-text {
+  background-color: var(--dark-input);
+  border-color: var(--border-color);
+  color: var(--text-muted);
+}
+
+/* Button styling */
+.btn-primaryy {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  font-weight: 500;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--accent-secondary);
+  border-color: var(--accent-secondary);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #4b4b4b;
+  border-color: #4b4b4b;
+}
+
+.btn-info {
+  background-color: var(--accent-info);
+  border-color: var(--accent-info);
+}
+
+.btn-success {
+  background-color: var(--accent-success);
+  border-color: var(--accent-success);
+}
+
+.btn-danger {
+  background-color: var(--accent-danger);
+  border-color: var(--accent-danger);
+}
+
+.btn-outline-primary {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--accent-primary);
+  color: white;
+}
+
+.btn-outline-info {
+  color: var(--accent-info);
+  border-color: var(--accent-info);
+}
+
+.btn-outline-info:hover {
+  background-color: var(--accent-info);
+  color: #121212;
+}
+
+.btn-outline-secondary {
+  color: var(--text-secondary);
+  border-color: var(--text-secondary);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--text-secondary);
+  color: #121212;
+}
+
+/* Link styling */
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-info);
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Site header & main container */
+.site-header {
+  margin-bottom: 70px;
+}
+
+/* Post styling */
+.media {
+  background-color: var(--dark-card);
+  border-color: var(--border-color) !important;
+}
+
+.article-title {
+  color: var(--text-primary);
+}
+
+.article-title:hover {
+  color: var(--accent-primary);
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+  border: 3px solid var(--accent-primary);
+}
+
+.post-image {
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+/* Sidebar styling */
+.sidebar {
+  background-color: #181818;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.sidebar h3 {
+  color: var(--accent-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.sidebar .list-group-item {
+  background-color: #1a1a1a;
+  border-color: #333;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+.sidebar .list-group-item:hover {
+  background-color: #222;
+  transform: translateX(5px);
+}
+
+/* Badge and tag styling */
+.badge {
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.bg-info {
+  background-color: var(--accent-info) !important;
+}
+
+/* Alert styling */
+.alert {
+  border: none;
+  border-radius: 8px;
+}
+
+.alert-success {
+  background-color: rgba(0, 184, 148, 0.2);
+  color: #00d1b2;
+}
+
+.alert-danger {
+  background-color: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+}
+
+.alert-warning {
+  background-color: rgba(253, 203, 110, 0.2);
+  color: #fdcb6e;
+}
+
+.alert-info {
+  background-color: rgba(0, 210, 211, 0.2);
+  color: #00d2d3;
+}
+
+/* Card styling */
+.card {
+  background-color: var(--dark-card);
+  border-color: var(--border-color);
+}
+
+.card-body {
+  color: var(--text-primary);
+}
+
+/* Modal styling */
+.modal-content {
+  background-color: var(--dark-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.modal-header {
+  border-bottom-color: var(--border-color);
+}
+
+.modal-footer {
+  border-top-color: var(--border-color);
+}
+
+/* Post content */
+.post-content {
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+/* Footer */
+footer {
+  background-color: #0f0f0f !important;
+  color: var(--text-muted);
+  margin-top: 30px !important;
+}
+
+/* Animations and effects */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.media {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* Special effect for trending topics */
+.badge.bg-info {
+  background: linear-gradient(45deg, var(--accent-info), var(--accent-primary)) !important;
+  transition: all 0.3s ease;
+}
+
+.badge.bg-info:hover {
+  transform: scale(1.05);
+}
+
+/* Style for comments */
+.comment-section {
+  border-left: 3px solid var(--accent-primary);
+  padding-left: 15px;
+}
+
+/* Account profile image */
+.account-img {
+  width: 125px;
+  height: 125px;
+  border: 4px solid var(--accent-primary);
+}
+
+/* Search input customization */
+.input-group .form-control {
+  border-radius: 20px 0 0 20px;
+}
+
+.input-group .btn {
+  border-radius: 0 20px 20px 0;
+}
+
+/* Background pattern effect */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: radial-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+  z-index: -1;
+}
+
+/* Post interaction buttons hover effects */
+.btn-outline-primary, .btn-outline-info, .btn-outline-secondary {
+  transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover, .btn-outline-info:hover, .btn-outline-secondary:hover {
+  transform: translateY(-2px);
+}
+
+/* Legend styling */
+legend {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+/* Make sure code blocks are dark themed too */
+pre, code {
+  background-color: #1a1a1a;
+  color: #e2e2e2;
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+}
+
+
+/* These are some additional CSS styles you can add to your main.css file to enhance the dark theme further */
+
+/* User profile & trend styling */
+.profile-badge {
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+.user-bio {
+  border-left: 3px solid var(--accent-primary);
+}
+
+.user-stats .fw-bold {
+  text-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+}
+
+.trend-card {
+  transition: all 0.3s ease;
+}
+
+.trend-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+  border-color: var(--accent-primary);
+}
+
+.trend-icon, .comment-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced search box with glow effect */
+.input-group:focus-within {
+  box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25);
+  border-radius: 20px;
+}
+
+/* Enhanced card hover effect */
+.card:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Nicer fade effect for truncated text */
+.fade {
+  opacity: 0.5;
+}
+
+/* Additional styles for comments */
+.comment-section {
+  position: relative;
+  border-left: 3px solid var(--accent-primary);
+  padding-left: 15px;
+  margin-bottom: 20px;
+}
+
+.comment-body {
+  background-color: rgba(30, 30, 40, 0.6);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+}
+
+.comment-body:hover {
+  background-color: rgba(40, 40, 50, 0.8);
+  transform: translateX(3px);
+}
+
+.comment-avatar {
+  border: 2px solid var(--accent-primary);
+  box-shadow: 0 0 8px rgba(138, 43, 226, 0.4);
+}
+
+.comment-actions {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.comment-body:hover .comment-actions {
+  opacity: 1;
+}
+
+.comment-timestamp {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Animated like button */
+.like-button {
+  transition: transform 0.2s ease;
+}
+
+.like-button:hover {
+  transform: scale(1.15);
+  color: var(--accent-primary) !important;
+}
+
+.like-button.active {
+  color: var(--accent-primary) !important;
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+/* __________________________________________________________________________ */
+
+
+
+/* Additional CSS styles to complement your main.css */
+/* These should be added to your existing main.css file */
+
+/* Search Results Page Styles */
+.search-result-card {
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.search-result-card:hover {
+  border-left: 3px solid var(--accent-primary);
+  transform: translateX(5px);
+}
+
+.filter-group {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.filter-group .btn {
+  border-radius: 0;
+  padding: 8px 20px;
+  font-weight: 500;
+}
+
+.empty-results {
+  border-left: 4px solid var(--accent-info);
+  font-weight: 500;
+}
+
+.read-more-btn {
+  transition: all 0.3s ease;
+}
+
+.read-more-btn:hover {
+  background-color: var(--accent-primary);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(138, 43, 226, 0.3);
+}
+
+.trend-badge {
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.trend-badge:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.interaction-buttons .btn {
+  transition: all 0.3s ease;
+}
+
+.interaction-buttons .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* User Card Styles */
+.user-card {
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border-top: 3px solid transparent;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+  border-top: 3px solid var(--accent-primary);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.user-avatar {
+  transition: all 0.3s ease;
+}
+
+.user-card:hover .user-avatar {
+  transform: scale(1.05);
+}
+
+.username-link {
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.username-link:hover {
+  color: var(--accent-primary);
+  text-decoration: underline !important;
+}
+
+.profile-btn {
+  transition: all 0.3s ease;
+}
+
+.profile-btn:hover {
+  background-color: var(--accent-primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(138, 43, 226, 0.3);
+}
+
+/* Trend Card Styles */
+.trend-card {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 12px;
+  overflow: hidden;
+  border-top: 3px solid transparent;
+}
+
+.trend-card:hover {
+  transform: translateY(-8px);
+  border-top: 3px solid var(--accent-primary);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25) !important;
+}
+
+.trend-icon-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.trend-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8a2be2, #5f27cd);
+  color: white;
+  border-radius: 50%;
+  box-shadow: 0 8px 16px rgba(138, 43, 226, 0.3);
+  transition: all 0.3s ease;
+}
+
+.trend-card:hover .trend-icon {
+  transform: scale(1.1) rotate(15deg);
+}
+
+.trend-name {
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.trend-name:hover {
+  color: var(--accent-info) !important;
+}
+
+.view-trend-btn {
+  transition: all 0.3s ease;
+}
+
+.view-trend-btn:hover {
+  background-color: var(--accent-primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(138, 43, 226, 0.3);
+}
+
+/* Password Reset Page Styles */
+.reset-password-container {
+  max-width: 500px;
+  margin: 0 auto;
+  border-top: 4px solid var(--accent-primary);
+}
+
+.password-icon-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.password-reset-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(138, 43, 226, 0.2));
+  color: var(--accent-primary);
+  border-radius: 50%;
+  box-shadow: 0 8px 16px rgba(138, 43, 226, 0.2);
+  transition: all 0.3s ease;
+}
+
+.reset-password-container:hover .password-reset-icon {
+  transform: rotate(15deg);
+}
+
+.password-reset-form .form-control {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.password-reset-form .form-control:focus {
+  transform: translateY(-2px);
+}
+
+.submit-btn {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(138, 43, 226, 0.3);
+}
+
+.password-tips {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.tips-list li {
+  padding: 8px 0;
+  transition: all 0.2s ease;
+}
+
+.tips-list li:hover {
+  transform: translateX(5px);
+  color: var(--accent-primary);
+}
+
+/* Attachment Container Styles */
+.attachment-container {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.attachment-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.video-container {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.video-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Search input animation */
+.input-group .form-control {
+  transition: all 0.3s ease;
+}
+
+.input-group:focus-within .form-control {
+  background-color: #2d2d2d;
+}
+
+.input-group:focus-within .input-group-text {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Empty state styling */
+.empty-results {
+  background-color: rgba(0, 210, 211, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
