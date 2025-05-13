@@ -1,5 +1,5 @@
 from flask import render_template,url_for,flash,redirect,request,abort
-from flaskblog.models import User, Posts, Comment, Trend, MessageRequest, Messages, BlockedUser,  post_trend
+from flaskblog.models import User, Posts, Comment, Trend, MessageRequest, Messages,  post_trend
 from flaskblog.forms import RegistrationForm,LoginForm,UpdateAccountForm,PostForm,EmptyForm,CommentForm, ResetPasswordForm, MessageForm
 from flaskblog import app,db, bcrypt
 from flask_login import login_user,current_user,logout_user,login_required
@@ -14,6 +14,8 @@ from flaskblog.__init__ import mail
 from itsdangerous import URLSafeTimedSerializer
 from flaskblog.moderations import is_content_inappropriate, is_nsfw_image, is_nsfw_video
 from sqlalchemy.exc import IntegrityError
+from flask_socketio import SocketIO, emit, join_room, leave_room, send
+from . import socketio
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
@@ -546,42 +548,41 @@ def accept_request(request_id):
     return redirect(url_for("chat", user_id=req.sender_id))
 
 
-@app.route('/chat/<int:user_id>', methods=['GET', 'POST'])
+@app.route('/chat/<int:user_id>')
 @login_required
 def chat(user_id):
-    other_user = User.query.get_or_404(user_id)
-    is_blocked  = BlockedUser.query.filter_by(blocker_id = current_user.id, blocked_id=user_id).first()
-    form = MessageForm()
-    # Check if there's an accepted chat request between them
-    chat_request = MessageRequest.query.filter(
-        ((MessageRequest.sender_id == current_user.id) & (MessageRequest.receiver_id == user_id) |
-         (MessageRequest.sender_id == user_id) & (MessageRequest.receiver_id == current_user.id)) &
-        (MessageRequest.is_accepted == True)
-    ).first()
-
-    if not chat_request:
-        flash("You don't have permission to chat with this user.", "danger")
-        return redirect(url_for('messages_dashboard'))
-
-    # Handle sending message
-    if request.method == 'POST':
-        content = request.form.get('message')
-        if content:
-            new_msg = Messages(sender_id=current_user.id, receiver_id=user_id, content=content)
-            db.session.add(new_msg)
-            db.session.commit()
-            return redirect(url_for('chat', user_id=user_id))
-
-    # Fetch all messages between the two users
     messages = Messages.query.filter(
         ((Messages.sender_id == current_user.id) & (Messages.receiver_id == user_id)) |
         ((Messages.sender_id == user_id) & (Messages.receiver_id == current_user.id))
-    ).order_by(Messages.timestamp.desc()).all()
+    ).order_by(Messages.timestamp.asc()).all()
+    
+    return render_template('chat.html', user_id=user_id, messages=messages, current_user=current_user)
+@socketio.on('join')
+def handle_join(room):
+    join_room(room)
 
-    return render_template('chat.html', messages=messages, other_user=other_user, form=form, is_blocked= is_blocked)
 
+@socketio.on('send_message')
+def handle_send_message(data):
+    room = data['room']
+    msg = data['msg']
+    user = data['user']
+    sender_id = data['sender_id']
+    receiver_id = data['receiver_id']
 
-@app.route('/messages_request')
+    # Save message to DB
+    new_message = Messages(
+        sender_id=sender_id,
+        receiver_id=receiver_id,
+        content=msg
+    )
+    db.session.add(new_message)
+    db.session.commit()
+
+    # Broadcast to room
+    send({'msg': msg, 'user': user}, to=room)
+
+@app.route('/messages_dashboard')
 @login_required
 def messages_dashboard():
     # All accepted chat requests
@@ -594,40 +595,3 @@ def messages_dashboard():
     pending_requests = MessageRequest.query.filter_by(receiver_id=current_user.id, is_accepted=False).all()
 
     return render_template('messages_dashboard.html', accepted_requests=accepted_requests, pending_requests=pending_requests)
-
-
-@app.route("/toggle_block/<int:user_id>", methods=["POST"])
-@login_required
-def toggle_block(user_id):
-    if user_id == current_user.id:
-        flash("You cannot block yourself!", "warning")
-        return redirect(request.referrer or url_for('messages'))
-
-    blocked_entry = BlockedUser.query.filter_by(blocker_id=current_user.id, blocked_id=user_id).first()
-
-    if blocked_entry:
-        db.session.delete(blocked_entry)
-        db.session.commit()
-        flash("User has been unblocked.", "success")
-    else:
-        new_block = BlockedUser(blocker_id=current_user.id, blocked_id=user_id)
-        db.session.add(new_block)
-        db.session.commit()
-        flash("User has been blocked.", "danger")
-
-    return redirect(request.referrer or url_for('messages'))
-
-
-@app.context_processor
-def inject_new_message_status():
-    if current_user.is_authenticated:
-        # Check for unseen messages
-        new_messages = Messages.query.filter_by(receiver_id=current_user.id).order_by(Messages.timestamp.desc()).all()
-        # You can filter further by adding a 'seen' flag if needed
-
-        # Check for pending message requests
-        pending_requests = MessageRequest.query.filter_by(receiver_id=current_user.id, is_accepted=False).all()
-
-        has_new = bool(new_messages or pending_requests)
-        return dict(has_new_message=has_new)
-    return dict(has_new_message=False)

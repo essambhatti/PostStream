@@ -125,18 +125,10 @@ class MessageRequest(db.Model):
 
 class Messages(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     sender = db.relationship('User', foreign_keys=[sender_id])
     receiver = db.relationship('User', foreign_keys=[receiver_id])
-
-class BlockedUser(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    blocker_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    blocked_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    blocker = db.relationship('User', foreign_keys=[blocker_id])
-    blocked = db.relationship('User', foreign_keys=[blocked_id])
