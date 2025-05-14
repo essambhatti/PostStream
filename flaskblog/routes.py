@@ -208,7 +208,6 @@ def account():
     image_file=url_for("static" , filename="profile_pics/"+ current_user.image_file)
     return render_template('account.html', title="Account", image_file=image_file, form=form , posts=posts, repost = repost )
 
-#create post route
 @app.route('/post/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -216,48 +215,53 @@ def new_post():
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
-        trend_txt = form.trends.data if form.content.data else None
-        if trend_txt:
-            if is_content_inappropriate(title) or is_content_inappropriate(content) or is_content_inappropriate(trend_txt) :
-                flash("Your post contains inappropriate content. Please modify it.", "danger")
-                return redirect(url_for("new_post"))
-        elif is_content_inappropriate(title) or is_content_inappropriate(content):
+        trends_text = form.trends.data
+
+        # Check for inappropriate text
+        if is_content_inappropriate(title) or is_content_inappropriate(content) or \
+           (trends_text and is_content_inappropriate(trends_text)):
             flash("Your post contains inappropriate content. Please modify it.", "danger")
             return redirect(url_for("new_post"))
+
+        # Handle attachment
         attachment_filename = None
         if form.attachment.data:
             attachment_filename, attachment_path = save_attachment(form.attachment.data)
-            ext = os.path.splitext(attachment_filename)[1].lower()
-            
-            if ext in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
-                if is_nsfw_image(attachment_path):
-                    flash("Your image contains inappropriate content.", "danger")
-                    return redirect(url_for("new_post"))
-            elif ext in ['.mp4', '.mov', '.avi', '.webm', '.mkv']:
-                if is_nsfw_video(attachment_path):
-                    flash("Your video contains inappropriate content.", "danger")
-                    return redirect(url_for("new_post"))
-            
 
-        post = Posts(title=form.title.data, content=form.content.data,
-                    author=current_user, attachment=attachment_filename)
-        trend_names = list(set(t.strip().lower() for t in form.trends.data.split(',') if t.strip()))
+            if attachment_filename:
+                ext = os.path.splitext(attachment_filename)[1].lower()
+                try:
+                    if ext in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
+                        if is_nsfw_image(attachment_path):
+                            flash("Your image contains inappropriate content.", "danger")
+                            return redirect(url_for("new_post"))
+                    elif ext in ['.mp4', '.mov', '.avi', '.webm', '.mkv']:
+                        if is_nsfw_video(attachment_path):
+                            flash("Your video contains inappropriate content.", "danger")
+                            return redirect(url_for("new_post"))
+                except Exception as e:
+                    flash("An error occurred while processing your attachment.", "danger")
+                    return redirect(url_for("new_post"))
 
+        # Create the post object and add it to the session first
+        post = Posts(title=title, content=content, author=current_user, attachment=attachment_filename)
+        db.session.add(post)
+
+        # Handle trends (many-to-many)
+        trend_names = list(set(t.strip().lower() for t in trends_text.split(',') if t.strip()))
         for name in trend_names:
             trend = Trend.query.filter_by(name=name).first()
             if not trend:
                 trend = Trend(name=name)
-                db.session.add(trend)  # Add to session so it has an ID
-                db.session.flush()     # Flush so it can be used in the relationship
+                db.session.add(trend)
+            post.trends.append(trend)  # Safe after post is added to session
 
-            if trend not in post.trends:
-                post.trends.append(trend)
-
-        db.session.add(post)
+        # Commit everything
         db.session.commit()
         flash('The post is created and published!', 'success')
         return redirect(url_for('home'))
-    return render_template('new_post.html',title='New Post', legend = 'New Post', form=form, post=None)
+
+    return render_template('new_post.html', title='New Post', legend='New Post', form=form, post=None)
 
 #single post route
 @app.route('/post/<int:post_id>' , methods=['GET', 'POST'])
