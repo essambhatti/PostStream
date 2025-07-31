@@ -82,4 +82,5 @@ This project is licensed under the MIT License.
 Author
 ------
 
-**Essam Bhatti**Feel free to contribute or open issues with suggestions and feedback.
+**Essam Bhatti**
+\Feel free to contribute or open issues with suggestions and feedback.
