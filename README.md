@@ -56,8 +56,11 @@ How to Run Locally (Without Docker)
         
 4.  **Install Dependencies**pip install -r requirements.txt
     
-
-SECRET\_KEY=your\_secret\_keyMAIL\_SERVER=smtp.gmail.comMAIL\_PORT=587MAIL\_USERNAME=your\_emailMAIL\_PASSWORD=your\_email\_password
+SECRET_KEY=your_secret_key
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your_email
+MAIL_PASSWORD=your_email_password
 
 1.  **Run the Application**python run.pyVisit http://localhost:5000 in your browser.
     
@@ -83,4 +86,5 @@ Author
 ------
 
 **Essam Bhatti**
-\Feel free to contribute or open issues with suggestions and feedback.
+
+Feel free to contribute or open issues with suggestions and feedback.
